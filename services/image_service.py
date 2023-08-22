@@ -2,6 +2,8 @@ import aiohttp
 import discord
 import io
 import uuid
+import requests
+from PIL import Image
 
 
 async def fetch_image(url):
@@ -49,3 +51,30 @@ def process_image(image_data):
         return image_file
     else:
         return None
+
+
+def is_valid_image_url(url):
+    """
+    Checks if the given URL points to a valid image.
+
+    Args:
+        url (str): The URL to check.
+
+    Returns:
+        bool: True if the URL points to a valid image, False otherwise.
+    """
+    response = requests.get(url)
+
+    if response.status_code != 200:
+        return False
+
+    content_type = response.headers.get('content-type')
+    if not content_type or 'image' not in content_type:
+        return False
+
+    try:
+        Image.open(io.BytesIO(response.content))
+    except Exception as e:
+        return False
+
+    return True

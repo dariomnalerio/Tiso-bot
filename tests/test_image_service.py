@@ -1,7 +1,7 @@
 import discord
 import pytest
 import asyncio
-from services.image_service import fetch_image, process_image
+from services.image_service import fetch_image, process_image, is_valid_image_url
 
 valid_image_url = "https://res.cloudinary.com/dhkyj5k4o/image/upload/v1689556365/learnaba/download_1_jtm44l.png"
 invalid_image_url = "https://invalid-url.com/image.png"
@@ -138,3 +138,16 @@ def test_process_large_image():
 
     assert image_file is not None
     assert isinstance(image_file, discord.File)
+
+
+# Is Valid Image URL Tests
+
+
+@pytest.mark.parametrize("url, expected_result", [
+    (valid_image_url, True),
+    (invalid_image_url, False),
+    (non_image_url, False),
+])
+def test_is_valid_image_url(url, expected_result):
+    result = is_valid_image_url(url)
+    assert result == expected_result
