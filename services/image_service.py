@@ -19,16 +19,14 @@ async def fetch_image(url):
         or the URL does not start with http:// or https://.
     """
 
-    if not url.startswith("http://") and not url.startswith("https://"):
-        return None  # Invalid URL format
+    if not is_valid_image_url(url):
+        return None
 
     async with aiohttp.ClientSession() as session:
         async with session.get(url) as response:
             if response.status == 200:
-                content_type = response.headers.get("content-type")
-                if content_type and content_type.startswith("image/"):
-                    image_data = await response.read()
-                    return image_data
+                image_data = await response.read()
+                return image_data
             else:
                 return None
 
@@ -63,6 +61,10 @@ def is_valid_image_url(url):
     Returns:
         bool: True if the URL points to a valid image, False otherwise.
     """
+
+    if not url.startswith("http://") and not url.startswith("https://"):
+        return False  # Invalid URL format
+
     response = requests.get(url)
 
     if response.status_code != 200:

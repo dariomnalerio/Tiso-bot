@@ -6,7 +6,7 @@ from models.random_image_model import RandomImage
 from services.image_service import is_valid_image_url
 
 
-def GetRandomUrl():
+def GetRandomUrl(session):
     """
     Get a random image URL from the database.
 
@@ -17,13 +17,12 @@ def GetRandomUrl():
     """
     from sqlalchemy.sql import func
 
-    session = get_session()
     random_url = session.query(RandomImage.url).order_by(func.random()).first()
     session.close()
     return random_url
 
 
-def AddUrl(url: str, database_url: str = None):
+def AddUrl(url: str, session):
     """
     Add a new image URL to the database.
 
@@ -31,7 +30,6 @@ def AddUrl(url: str, database_url: str = None):
     """
     if not is_valid_image_url(url):
         raise ValueError("Invalid image URL")
-    session = get_session()
     new_url = RandomImage(url=url)  # Create a new RandomImage object
     session.add(new_url)  # Add the new object to the session
     session.commit()

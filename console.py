@@ -1,6 +1,6 @@
 from api.random_image import AddUrl
 import typer
-
+from database.database import get_session
 from services.image_service import is_valid_image_url
 
 app = typer.Typer()
@@ -17,7 +17,8 @@ def add(url: str = typer.Argument(..., help="The URL of the image to add to the 
         raise ValueError("Invalid image URL")
     else:
         try:
-            AddUrl(url)
+            session = get_session()
+            AddUrl(url, session)
             typer.echo("URL added successfully")
         except ValueError as e:
             typer.echo(str(e))
@@ -34,7 +35,8 @@ def get():
         str: A random image URL.
     """
     from api.random_image import GetRandomUrl
-    typer.echo(GetRandomUrl())
+    session = get_session()
+    typer.echo(GetRandomUrl(session))
 
 
 if __name__ == "__main__":

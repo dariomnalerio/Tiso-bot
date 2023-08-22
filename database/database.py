@@ -24,3 +24,9 @@ def get_session():
 # Create tables if they don't exist, will use Alembic in future versions
 def create_tables():
     Base.metadata.create_all(engine)
+
+def get_in_memory_db():
+    engine = create_engine('sqlite:///:memory:', echo=True)
+    Base.metadata.create_all(engine)
+    Session = sessionmaker(bind=engine)
+    return Session()
