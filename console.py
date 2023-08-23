@@ -1,3 +1,4 @@
+from api.afk_count import get_afk_count, add_to_afk_count
 from api.random_image import add_url, get_random_url
 from api.poll import create_poll
 import typer
@@ -81,6 +82,30 @@ def poll_create(
     options_list = options.split(",")
 
     typer.echo(create_poll(session, question, options_list))
+
+# Afk count commands
+
+
+@app.command()
+def afk_count_get(discord_id: str = typer.Argument(..., help="The discord ID of the user."), server_id: str = typer.Argument(..., help="The discord ID of the server.")):
+    """
+    Get the current AFK count for a user.
+
+    This function gets the current AFK count for a user.
+    """
+    session = get_session()
+    typer.echo(get_afk_count(session, discord_id, server_id))
+
+
+@app.command()
+def afk_count_add(discord_id: str = typer.Argument(..., help="The discord ID of the user."), server_id: str = typer.Argument(..., help="The discord ID of the server.")):
+    """
+    Add a user to the AFK count.
+
+    This function adds a user to the AFK count.
+    """
+    session = get_session()
+    add_to_afk_count(session, discord_id, server_id)
 
 
 if __name__ == "__main__":

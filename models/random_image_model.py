@@ -13,4 +13,4 @@ class RandomImage(Base):
     __tablename__ = 'random_image'
 
     id = Column(Integer, primary_key=True)
-    url = Column(String)
+    url = Column(String, unique=True)
