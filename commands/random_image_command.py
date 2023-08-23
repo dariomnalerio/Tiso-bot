@@ -1,4 +1,4 @@
-from api.random_image import GetRandomUrl
+from api.random_image import get_random_url
 from services.image_service import fetch_image, process_image
 from database.database import get_session
 
@@ -9,7 +9,7 @@ def randomImage(bot):
         """Send a message with a random image"""
         # Get a random image URL
         session = get_session()
-        random_url = GetRandomUrl(session)
+        random_url = get_random_url(session)
 
         # Fetch the image data asynchronously
         image_data = await fetch_image(random_url[0])

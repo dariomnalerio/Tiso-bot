@@ -1,3 +1,6 @@
+"""
+Test image service functions.
+"""
 import discord
 import pytest
 import asyncio

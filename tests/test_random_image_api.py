@@ -1,5 +1,5 @@
 import pytest
-from api.random_image import GetRandomUrl, AddUrl
+from api.random_image import get_random_url, add_url
 from database.database import get_in_memory_db
 from models.random_image_model import RandomImage
 
@@ -14,7 +14,6 @@ def session():
     Create tables in the in-memory database and create a session.
     """
     session = get_in_memory_db()
-
     yield session
     session.close()
 
@@ -23,14 +22,14 @@ def test_add_url(session):
     """
     Test that a URL can be added to the database.
 
-    This test checks that a URL can be added to the database using the AddUrl
+    This test checks that a URL can be added to the database using the add_url
     function.
 
     Args:
         session (Session): A SQLAlchemy session object.
 
     """
-    AddUrl(url, session)
+    add_url(url, session)
 
     added_url = session.query(RandomImage).filter_by(url=url).first()
     assert added_url is not None
@@ -42,7 +41,7 @@ def test_get_random_url(session):
     Test that a random URL can be retrieved from the database.
 
     This test checks that a random URL can be retrieved from the database using
-    the GetRandomUrl function.
+    the get_random_url function.
     """
 
     urls = [
@@ -53,9 +52,9 @@ def test_get_random_url(session):
     ]
 
     for url_item in urls:
-        AddUrl(url_item, session)
+        add_url(url_item, session)
 
-    random_url = GetRandomUrl(session)
+    random_url = get_random_url(session)
     assert random_url is not None
     print("Retrieved URL:", random_url[0])
     assert random_url[0] in urls

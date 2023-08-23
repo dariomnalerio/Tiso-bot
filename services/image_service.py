@@ -1,3 +1,6 @@
+""""
+    Module for image-related services.
+"""
 import aiohttp
 import discord
 import io
