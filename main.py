@@ -14,6 +14,9 @@ token = os.getenv("TOKEN")
 intents = discord.Intents.all()
 intents.message_content = True
 
+# Create tables
+create_tables()
+
 # Bot instance
 bot = commands.Bot(command_prefix='$', intents=intents)
 

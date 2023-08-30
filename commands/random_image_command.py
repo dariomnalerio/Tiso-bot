@@ -4,13 +4,12 @@ from database.database import get_session
 
 
 def randomImage(bot):
-    @bot.command()
+    @bot.command(name="f")
     async def randomImage(ctx):
         """Send a message with a random image"""
         # Get a random image URL
         session = get_session()
         random_url = get_random_url(session)
-
         # Fetch the image data asynchronously
         image_data = await fetch_image(random_url[0])
 
@@ -20,6 +19,8 @@ def randomImage(bot):
         if image_file:
             # Send the image to the Discord channel
             await ctx.send(file=image_file)
+            print("Image sent")
         else:
             # Handle the case when fetching or processing failed
             await ctx.send("Error getting image")
+            print("Error getting image")
